@@ -1,6 +1,5 @@
 import { snakeCase } from "lodash";
-import { ts } from "ts-morph";
-import { PropertySignature, factory } from "typescript";
+import ts, { factory } from "typescript";
 import { tokenizeInput } from "../tokenize/tokenizeInput";
 import { isNotNullable } from "../utils";
 import { create_itemLabel_StringLiteralExpression } from "./create_itemLabel_StringLiteralExpression";
@@ -115,7 +114,7 @@ export function create_eventByName_ObjectLiteral({
               )
             : undefined,
         ].filter(
-          (x: PropertySignature | undefined): x is PropertySignature =>
+          (x: ts.PropertySignature | undefined): x is ts.PropertySignature =>
             x !== undefined
         );
 

@@ -1,5 +1,4 @@
-import { ts } from "ts-morph";
-import { factory } from "typescript";
+import ts, { factory } from "typescript";
 import { ItemLocationToken } from "../tokenize/tokenizeItemLocation";
 import { isNotNullable } from "../utils";
 

@@ -1,11 +1,14 @@
-import { NodeFlags, ts } from "ts-morph";
-import { createSourceFile, factory, ScriptTarget } from "typescript";
+import ts, { factory } from "typescript";
 import { tokenizeInput } from "../tokenize/tokenizeInput";
 import { RowModel } from "../types/RowModel";
 import { create_eventByName_ObjectLiteral } from "./create_eventByName_ObjectLiteral";
 
 function createInMemorySourceFile(content: string) {
-  return createSourceFile("virtual-file.ts", content, ScriptTarget.Latest);
+  return ts.createSourceFile(
+    "virtual-file.ts",
+    content,
+    ts.ScriptTarget.Latest
+  );
 }
 
 export async function create_sourceFile({
@@ -90,12 +93,12 @@ export async function create_sourceFile({
                 )
               ),
             ],
-            NodeFlags.Const
+            ts.NodeFlags.Const
           )
         ),
       ],
       factory.createToken(ts.SyntaxKind.EndOfFileToken),
-      NodeFlags.None
+      ts.NodeFlags.None
     ),
   ];
 }
