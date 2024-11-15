@@ -2,10 +2,10 @@ import { useToast } from "@/hooks/use-toast";
 import { ClipboardDocumentIcon } from "@heroicons/react/20/solid";
 import { useDebounce } from "@uidotdev/usehooks";
 import { useEffect, useState } from "react";
+import { ThemeToggle } from "./components/theme/theme-toggle";
 import { Button } from "./components/ui/button";
 import { Input } from "./components/ui/input";
 import { Textarea } from "./components/ui/textarea";
-import { Toaster } from "./components/ui/toaster";
 import { create_sourceFile } from "./lib/generate/create_sourceFile";
 import { formatSourceFileText } from "./lib/readWrite/formatSourceFileText";
 import { highlightSourceFileText } from "./lib/readWrite/highlightSourceFileText";
@@ -18,24 +18,22 @@ export function App() {
   const debouncedInput = useDebounce(input, 500);
   const debouncedReportName = useDebounce(reportName, 500);
   const [output, setOutput] = useState("");
-  const [isError, setIsError] = useState(false);
 
   const { toast } = useToast();
 
   useEffect(() => {
     async function effect() {
-      if (!debouncedInput || !reportName) {
+      if (!debouncedInput || !debouncedReportName) {
         return;
       }
 
-      setIsError(false);
       try {
-        const rawTsv = input;
+        const rawTsv = debouncedInput;
 
         const tsvRows = tokenizeTsvFile({ tsv: rawTsv });
         const sourceFile = await create_sourceFile({
           rows: tsvRows,
-          reportName: reportName,
+          reportName: debouncedReportName,
         });
         const sourceText = stringifyNodes(sourceFile);
         const formattedTs = await formatSourceFileText({
@@ -47,12 +45,12 @@ export function App() {
 
         setOutput(highlightedTs);
       } catch (e) {
-        setIsError(true);
+        toast({ title: "Error!" });
       }
     }
 
     effect();
-  }, [debouncedInput, debouncedReportName]);
+  }, [debouncedInput, debouncedReportName, toast]);
 
   const handleClickCopyToClipboard = async () => {
     const rawTsv = input;
@@ -73,16 +71,13 @@ export function App() {
     }
   };
 
-  useEffect(() => {
-    if (isError) {
-      toast({ title: "Error!" });
-    }
-  }, [isError]);
-
   return (
-    <>
-      <div className="flex flex-1 gap-2">
-        <div className="flex flex-1 flex-col">
+    <div>
+      <div className="border-b-2 py-2 px-4 flex justify-end">
+        <ThemeToggle />
+      </div>
+      <div className="flex flex-1 gap-4 p-4">
+        <div className="flex flex-1 flex-col gap-4">
           <Textarea
             placeholder="TSV data..."
             onInput={(e) => setInput(e.currentTarget.value)}
@@ -111,7 +106,6 @@ export function App() {
           </div>
         </div>
       </div>
-      <Toaster />
-    </>
+    </div>
   );
 }
