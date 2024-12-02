@@ -94,7 +94,7 @@ export function App() {
             />
           </div>
         </div>
-        <div className="relative flex-1 overflow-hidden rounded-md shadow-sm ring-1 ring-inset ring-gray-300">
+        <div className="relative flex-1 overflow-hidden rounded-md shadow-sm ring-1 ring-inset ring-gray-300 px-3 py-2">
           <div
             dangerouslySetInnerHTML={{ __html: output }}
             className={"max-h-full overflow-auto"}
