@@ -8,7 +8,15 @@ export function ThemeToggle() {
   const { setTheme, theme } = useTheme();
 
   return (
-    <ToggleGroup type="single" onValueChange={setTheme}>
+    <ToggleGroup
+      type="single"
+      onValueChange={(newTheme: Theme | "") => {
+        if (!newTheme) {
+          return;
+        }
+        setTheme(newTheme);
+      }}
+    >
       <ToggleGroupItem value={"light" satisfies Theme}>
         <Sun
           className={clsx(
