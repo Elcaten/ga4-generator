@@ -72,7 +72,7 @@ export function App() {
   };
 
   return (
-    <div>
+    <div className="flex flex-col h-full">
       <div className="border-b-2 py-2 px-4 flex justify-end">
         <ThemeToggle />
       </div>
