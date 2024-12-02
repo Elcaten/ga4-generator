@@ -1,11 +1,15 @@
+import { parse } from "papaparse";
 import { RowModel } from "../types/RowModel";
 import { TsvRow } from "../types/TsvRow";
 
 export function tokenizeTsvFile({ tsv }: { tsv: string }): RowModel[] {
-  return tsv
-    .split("\n")
-    .map((row) => row.split("\t"))
-    .map(rowToModel);
+  const parseResult = parse<TsvRow>(tsv, { delimiter: "\t" });
+  if (parseResult.errors.length > 0) {
+    throw new Error("Parse error", {
+      cause: { parseErrors: parseResult.errors },
+    });
+  }
+  return parseResult.data.map(rowToModel);
 }
 
 function rowToModel(row: TsvRow): RowModel {

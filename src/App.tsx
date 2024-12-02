@@ -45,6 +45,7 @@ export function App() {
 
         setOutput(highlightedTs);
       } catch (e) {
+        console.error(e);
         toast({ title: "Error!" });
       }
     }
